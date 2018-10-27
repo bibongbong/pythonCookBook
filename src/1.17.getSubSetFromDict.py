@@ -16,7 +16,7 @@ prices = {
 p1 = {key:value for key, value in prices.items() if value > 200}
 print(p1)   # {'AAPL': 612.78, 'IBM': 205.55}
 
-# 这个是从prices中取出，key在tech_names的元素
+# 这个例子是从prices中取出，key在tech_names的元素
 # 有点像1.16过滤序列元素里的compress的功能，用一个相关序列来过滤某个序列
 tech_names = {'AAPL', 'IBM', 'HPQ', 'MSFT'}
 p2 = {key:value for key, value in prices.items() if key in tech_names}
