@@ -7,17 +7,21 @@
 grades = [1, 2,3,4, 5,6,7,8,9,10]
 first,*middle,last = grades
 print("first:%d, middle:%s, last:%d" %(first, middle, last))
+#first:1, middle:[2, 3, 4, 5, 6, 7, 8, 9], last:10
+
 
 # 如果有一些用户的记录，每条记录包含一个名字，邮件，接着就是不确定数量的电话号码
 record = ('Dave', 'dave@example.com', '773-22-222', '388-222-333')
 name, mail, *phone_numbers = record
 print("name:%s, mail:%s, last:%s" %(name, mail, phone_numbers))
+#name:Dave, mail:dave@example.com, last:['773-22-222', '388-222-333']
+
 
 #如果有一个公司前8个月销售数据的序列，想得到最近一个月和前面7个月的平均值的对比
 *trailing_qtrs, current_qtr = grades
 average = sum(trailing_qtrs)/len(trailing_qtrs)
 print((trailing_qtrs,current_qtr,average))
-
+# ([1, 2, 3, 4, 5, 6, 7, 8, 9], 10, 5.0)
 
 ####################################
 #  1.3 保留最后n个元素
@@ -32,7 +36,7 @@ def searchMatch(lines, pattern, history=5):
         if pattern in line:
             previous_lines.append(line)
             yield line
-    print(previous_lines)
+    print('1.3: ',previous_lines)
 
 #with open("D:/mytext.txt") as f:
 #    for line in searchMatch(f, 'python', 5):
@@ -47,8 +51,8 @@ def searchMatch(lines, pattern, history=5):
 import heapq
 
 # grades = [1, 2,3,4, 5,6,7,8,9,10]
-print(heapq.nlargest(3, grades))
-print(heapq.nsmallest(4, grades))
+print(heapq.nlargest(3, grades))    # [10, 9, 8]
+print(heapq.nsmallest(4, grades))   # [1, 2, 3, 4]
 
 
 # 更好性能的方法，将集合数据进行堆排序
