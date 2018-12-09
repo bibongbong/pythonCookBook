@@ -29,4 +29,13 @@ for x,y in zip_longest(a,b):
 None d
 '''
 
+'''
+zip()返回的是迭代器，如果需要将结对的值存储在列表，则要使用list函数
+'''
+
+print(list(zip(a,b)))
+# [(1, 'a'), (2, 'b'), (3, 'c')]
+
+
+
 
