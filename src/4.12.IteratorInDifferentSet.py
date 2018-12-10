@@ -10,6 +10,11 @@ for c in chain(a,b):
 	print(c)
 
 '''
+chain的实现类似这样的处理，通过生成器先迭代完a，再迭代b
+def chain(a, b):
+	yield from a 
+	yield from b
+
 当然也可以使用  for c in (a+b)
 但这样会生成一个临时对象，当a和b很大时，会占用很多资源
 '''
