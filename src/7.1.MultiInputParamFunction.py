@@ -16,6 +16,7 @@ avg(2,4,5,7)
 import html
 
 def make_element(name, value, **attrs):
+	print(attrs)
 	keyvals = [' %s="%s"' % item for item in attrs.items()]
 	attr_str = ''.join(keyvals)
 	element = '<{name}{attrs}>{value}</{name}>'.format(
