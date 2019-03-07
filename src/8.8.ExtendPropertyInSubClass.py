@@ -10,7 +10,7 @@ class Person:
 	
 	@property
 	def name(self):
-	return self._name
+		return self._name
 	
 	# Setter function
 	@name.setter
@@ -40,3 +40,17 @@ class SubPerson(Person):
 如果不知道到底哪个基类定义了property，只能通过重新定义所有property
 并使用super()来将控制权传递给前面的实现
 '''
+
+class A(object):
+	def show(self):
+		print("show A")
+
+class B(A):
+	def show(self):
+		print("show B")
+		#super().show()
+
+b = B()
+b.show()
+b.__class__ = A
+b.show()
