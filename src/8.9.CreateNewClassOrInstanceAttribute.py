@@ -18,12 +18,13 @@ class Integer(object):
         instance.__dict__[self.name] = value
  
 class Point(object):
-    x = Integer('x')
-    y = Integer('y')
-    def __init__(self, x, y):
+    x = Integer('x1')
+    y = Integer('y1')
+    def __init__(self,x,y,z):
         self.x = x
         self.y = y
+        self.name = z
  
-p = Point(2, 3)
-p.x = 9
+p = Point(1,2,'point')
 p.x = 9.9#这句会抛出TypeError: Expected an int错误.这就是描述器的作用.
+
