@@ -103,3 +103,45 @@ test end: 3
 test end: 1
 test end: 2
 '''
+
+####################################  用作协程的生成器       ######################################
+def simple_coroutine():
+	print('->coroutine started')
+	x = yield
+	print('->coroutine received x:',x)
+
+my_coro = simple_coroutine()
+print(my_coro)
+next(my_coro)
+#my_coro.send(42)
+'''
+->coroutine started
+->coroutine received x: 42
+Traceback (most recent call last):
+  File "D:\GitCode\pythonCookBook\src\CoroutineDemo.py", line 116, in <module>
+    my_coro.send(42)
+StopIteration
+'''
+
+def simple_coroutine2(a):
+	print('->coroutine started: a=',a)
+	b = yield a
+	print('->coroutine received b=',b)
+	c = yield a+b
+	print('->coroutine received c=',c)
+
+my_coro2 = simple_coroutine2(14)
+print(my_coro2)
+next(my_coro2)
+my_coro2.send(28)
+my_coro2.send(99)
+'''
+<generator object simple_coroutine2 at 0x0000024D8DBDE678>
+->coroutine started: a= 14
+->coroutine received b= 28
+->coroutine received c= 99
+'''
+
+
+
+
