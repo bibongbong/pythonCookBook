@@ -210,7 +210,7 @@ def average3():
 		count += 1
 		average = total/count
 		#4 返回的Result会成为grouper中yield from表达式的值
-		return Result(count, average)
+	return Result(count, average)
 
 
 #5 委托生成器
@@ -273,3 +273,103 @@ data = {
 }
 
 main(data)		
+
+'''
+16.9 使用协程做离散事件仿真
+离散时间仿真 DiscreteEventSimulation，一种把系统建模层一系列时间的仿真类型
+离散事件仿真中，仿真钟向前推进的量不是固定的，比如模拟出租车运营，一个事件是顾客上车
+下一个事件是顾客乘客下车。不管乘客做了5分钟还是50分钟，一旦乘客下车，仿真钟就会更新，指向此次运营结束时间
+
+而连续仿真的仿真钟是以固定量向前推进。回合制游戏就是离散事件仿真的例子。实时游戏就是连续仿真，反应慢的玩家特别吃亏。
+本节目的就是通过离散事件仿真，增进对使用协程管理并发操作的认知。洞悉asyncio、Twisted和Tornado等库
+是如何在单线程中管理多个并发活动的
+
+
+'''
+import queue
+#time事件发生时的仿真时间，proc 出租车进程实例编号，action描述活动的字符串
+Event = namedtuple('Event', 'time proc action')
+
+#每辆出租车调用一次taxi_process，创建一个生成器对象，表示每辆车的运营过程
+#ident是出租车的编号，trips出租车回家前的行程数量，start_time离开车库的时间
+def taxi_process(ident, trips, start_time=0):
+
+	#离开车库，遇到yield，协程暂停，仿真主循环处理排定的下一个事件
+	#当需要重新激活时，主循环用send发送当前仿真时间，赋值给time
+	time = yield Event(start_time, ident, 'leave garge')
+	for i in range(trips):
+		#产出一个Event实例，表示拉到乘客，协程暂停，当主循环send当前时间时，重新激活这个协程
+		time = yield Event(time, ident, 'pick up passenger')
+
+		#产出一个Event实例，表示顾客下车，当主循环send当前时间时，重新激活这个协程
+		time = yield Event(time, ident, 'drop off passenger')
+
+	#行程数量完成，产出going home事件，协程最后一次暂停。
+	#主循环发送时间后，协程激活并执行到最后，抛出StopIteration异常
+	yield Event(time, ident, 'going home')
+
+def compute_duration(previous_action):
+    '''使用指数分布计算操作的耗时'''
+    if previous_action in ['leave garage', 'drop off passenger']:
+        # 新状态是四处徘徊
+        interval = SEARCH_DURATION
+    elif previous_action == 'pick up passenger':
+        # 新状态是开始行程
+        interval = TRIP_DURATION
+    elif previous_action == 'going home':
+        interval = 1
+    else:
+        raise ValueError('Unkonw previous_action: %s' % previous_action)
+    return int(random.expovariate(1/interval)) + 1
+    
+
+class Simulator:
+	def __init__(self, procs_map):
+		self.event = queue.PriorityQueue()
+		self.procs = dict(procs_map)
+
+	def run(self, end_time):
+		#排定各辆出租车的第一个事件
+		for _,proc in sorted(self.procs.items()):
+			first_event = next(proc)
+			self.events.put(first_event)
+
+		sim_time =0
+		while sim_time < end_time:
+			if self.events.empty():
+				print('*** end of events ***')
+				break
+
+			#8
+			current_event = self.events.get()
+
+			#9
+			sim_time, proc_id, previous_action = current_event
+			print('taxi:',proc_id,proc_id*'  ',current_event)
+
+			#11
+			active_proc = self.procs[proc_id]
+
+			#12
+			next_time = sim_time + compute_duration(previous_action)
+
+			try:
+				#13
+				next_event = active_proc.send(next_time)
+			except StopIteration:
+				del self.procs[proc_id]
+			#send(next_time)后，如果返回的的不是StopIteration，则把next_event放到queue
+			else:
+				self.events.put(next_event)
+		# while循环的else，到达结束时间而结束
+		else:
+			msg = '*** end of simulation time: {} events pending ***'
+			print(msg.format(self.events.qsize()))
+
+
+
+DEPARTURE_INTERVAL = 5
+num_taxis = 3
+taxis = {i: taxi_process(i, (i+1)*2, i*DEPARTURE_INTERVAL) for i in range(num_taxis)}
+sim = Simulator(taxis)
+sim.run(end_time)
