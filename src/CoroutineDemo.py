@@ -59,14 +59,15 @@ def test(i):
 	#当asyncio.sleep()返回时，线程就可以从yield from拿到返回值（此处是None），然后接着执行下一行语句。
 	#把asyncio.sleep(1)看成是一个耗时1秒的IO操作，在此期间，主线程并未等待，而是去执行EventLoop中其他可以执行的coroutine了
 	#因此可以实现并发执行。
-	r = yield from asyncio.sleep(1)
+	#r = yield from asyncio.sleep(1)
+	request.urlopen('http://cn.bing.com')
 	print('test end:', i)
-'''
+
 loop = asyncio.get_event_loop()
 tasks = [test(i) for i in range(5)]
 loop.run_until_complete(asyncio.wait(tasks))
 loop.close()
-
+'''
 test start: 4
 test start: 1
 test start: 2
@@ -110,9 +111,9 @@ def simple_coroutine():
 	x = yield
 	print('->coroutine received x:',x)
 
-my_coro = simple_coroutine()
-print(my_coro)
-next(my_coro)
+#my_coro = simple_coroutine()
+#print(my_coro)
+#next(my_coro)
 #my_coro.send(42)
 '''
 ->coroutine started
@@ -123,6 +124,7 @@ Traceback (most recent call last):
 StopIteration
 '''
 
+
 def simple_coroutine2(a):
 	print('->coroutine started: a=',a)
 	b = yield a
@@ -130,11 +132,11 @@ def simple_coroutine2(a):
 	c = yield a+b
 	print('->coroutine received c=',c)
 
-my_coro2 = simple_coroutine2(14)
-print(my_coro2)
-next(my_coro2)
-my_coro2.send(28)
-my_coro2.send(99)
+#my_coro2 = simple_coroutine2(14)
+#print(my_coro2)
+#next(my_coro2)
+#my_coro2.send(28)
+#my_coro2.send(99)
 '''
 <generator object simple_coroutine2 at 0x0000024D8DBDE678>
 ->coroutine started: a= 14
@@ -142,6 +144,23 @@ my_coro2.send(99)
 ->coroutine received c= 99
 '''
 
+def doSomething():
+	asyncio.sleep(1)
+	return True
 
+def simple_coroutine3(x):
+	print('->simple_coroutine3 started: ',x)
+	yield from doSomething()
+	print('->simple_coroutine3 end:',y)
 
+#my_coro = simple_coroutine()
+#for i in range(3):
+#	item = simple_coroutine3(i)
+#	next(item)
+i1 = simple_coroutine3(1)
+next(i1)
+i2 = simple_coroutine3(2)
+next(i2)
+i3 = simple_coroutine3(3)
+next(i3)
 

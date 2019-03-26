@@ -370,6 +370,7 @@ class Simulator:
 
 DEPARTURE_INTERVAL = 5
 num_taxis = 3
+end_time = 120
 taxis = {i: taxi_process(i, (i+1)*2, i*DEPARTURE_INTERVAL) for i in range(num_taxis)}
 sim = Simulator(taxis)
 sim.run(end_time)
