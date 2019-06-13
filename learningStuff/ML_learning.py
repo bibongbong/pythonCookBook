@@ -5,7 +5,7 @@ https://www.zybuluo.com/hanbingtao/note/433855
 '''
 import numpy as np
 
-class Preceptron(object):
+class Perceptron(object):
 	def __init__(self, input_num, activator):
 		'''
 		初始化感知器，设置输入参数的个数，以及激活函数
@@ -15,7 +15,7 @@ class Preceptron(object):
 
 		#权重向量初始化为0
 		self.wights = [0.0 for _ in range(input_num)]
-		#偏执项初始化为0
+		#偏置项初始化为0
 		self.bias = 0.0
 
 
@@ -58,6 +58,8 @@ class Preceptron(object):
 	def _update_weights(self,input_vec, output, label, rate):
 
 		# 把input_vec[x1, x2, x3, ...]和weights[w1, w2, w3,...]打包
+		# 变成[(x1,w1),(x2,w2),(x3,w3),...]
+        # 然后利用感知器规则更新权重
 		delta = label - output
 		self.weights = map(lambda x,w: w+delta*rate*x,input_vec,self.wights)
 
