@@ -18,6 +18,7 @@ def getShortList(mylist):
 shortListByYield = list(getShortList(mylist))
 print(shortListByYield)
 
+
 #   当过滤条件比较复杂，列表推导或者生成器不能满足需求时可以使用
 #   3. 内建 filter() 函数
 #   filter() 第一个参数是过滤函数，第二个是需要被过滤的列表
@@ -44,7 +45,7 @@ print(pos_list) # [1, 4, 0, 10, 0, 2, 3, 0]
 
 #   itertools.compress(), iterable对象和Boolean选择器序列作为输入
 #   输出 iterable中对应Boolean选择器为True的元素的迭代器
-#   用途：用另一个相关联的序列来过滤某个序列
+#   用途：用另一个相关联的序列来过滤某个序列，有点类似蒙版的功能
 
 from itertools import compress
 addresses = [
@@ -65,3 +66,7 @@ counts = [ 0, 3, 10, 4, 1, 7, 6, 1]
 more_than_5 = [n > 5 for n in counts]   # [False, False, True, False, False, True, True, False]
 filered_add = list(compress(addresses, more_than_5))    #['5800 E 58TH', '1060 W ADDISON', '4801 N BROADWAY']
 print(filered_add)
+
+# compress有点像filter的衍生，filter使用的是一个函数来过滤，而compress用的是一个序列来过滤
+# compress(target_seq, filter_seq)
+# filter(filter_func, target_seq)

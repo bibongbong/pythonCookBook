@@ -4,7 +4,7 @@ import datetime
 记忆曲线
 记忆周期：
 第一周期：当天，
-第二周期：当天12小时后（睡前）
+第二周期：当天8小时后（睡前）
 第三周期：第一天，
 第四周期：第二天，
 第五周期：第四天，
@@ -40,12 +40,8 @@ class MemoryItem:
 		temp = []
 		temp.append(self.name)
 		for i in self.memoryList:
-			temp.append(i.strftime("%Y-%m-%d %H:%M")) 
-		return '\n'.join(temp)
-
-
-	
-
+			temp.append(i.strftime("%Y-%m-%d_%H:%M")) 
+		return '|'.join(temp)
 
 
 #判断当前日期时间，检查复习计划表，如果到则发出通知
@@ -55,8 +51,8 @@ def notify():
 
 a = MemoryItem('itme1', datetime.datetime.now())
 b = MemoryItem('itme2', datetime.datetime.now()+datetime.timedelta(days=1))
-c = MemoryItem('itme2', datetime.datetime.now()+datetime.timedelta(days=2))
-d = MemoryItem('itme2', datetime.datetime.now()+datetime.timedelta(days=3))
+c = MemoryItem('itme3', datetime.datetime.now()+datetime.timedelta(days=2))
+d = MemoryItem('itme4', datetime.datetime.now()+datetime.timedelta(days=3))
 ALL_Item.append(a)
 ALL_Item.append(b)
 ALL_Item.append(c)

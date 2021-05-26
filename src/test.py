@@ -19,9 +19,14 @@ def fileReaderGenerator(fn):
 	#end = time.perf_counter()
 	#return
 #filename = "D:\\mytext.txt" # 
-filename = "E:\\download\\橙红年代.txt"
+filename = "E:\\download\\橙红年代 - 副本.txt"
+str1="刘子光"
+count = 0
 for i in fileReaderGenerator(filename):
-	print(i)
+	#for eachLine in i:
+	#print(i)
+	count += i.count(str1)
+	print("count =",count)
 
-print("readNum ={}, totalSize ={}".format(readNum,readNum*1024))
+print("count =",count)
 

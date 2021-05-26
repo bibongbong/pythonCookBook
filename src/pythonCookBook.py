@@ -14,8 +14,8 @@ print("first:%d, middle:%s, last:%d" %(first, middle, last))
 # 如果有一些用户的记录，每条记录包含一个名字，邮件，接着就是不确定数量的电话号码
 record = ('Dave', 'dave@example.com', '773-22-222', '388-222-333')
 name, mail, *phone_numbers = record
-print("name:%s, mail:%s, last:%s" %(name, mail, phone_numbers))
-#name:Dave, mail:dave@example.com, last:['773-22-222', '388-222-333']
+print("name:%s, mail:%s, phone_numbers:%s" %(name, mail, phone_numbers))
+#name:Dave, mail:dave@example.com, phone_numbers:['773-22-222', '388-222-333']
 
 
 #如果有一个公司前8个月销售数据的序列，想得到最近一个月和前面7个月的平均值的对比

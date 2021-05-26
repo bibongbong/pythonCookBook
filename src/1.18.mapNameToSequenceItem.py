@@ -30,8 +30,8 @@ print(new_sub.addr) # yy@yyy.com
 Stock = namedtuple('Stock', ['name', 'shares', 'price', 'date', 'time'])
 stock_prototype = Stock('', 0, 0.0, None, None)
 def dict_to_stock(s):
-    #print(*s)   # name shares price
-    print(**s)  # **s 是对多个参数依次调用_replace()
+    print(*s)   # name shares price
+    #print(**s)  # **s 是对多个参数依次调用_replace()
     return stock_prototype._replace(**s)
 
 #  a中字段的值替换了stock_prototype中的原有几个字段的值
